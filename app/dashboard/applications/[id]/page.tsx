@@ -59,7 +59,7 @@ export default async function EditApplicationPage({
           workMode: application.workMode,
           employmentType: application.employmentType,
           status: application.status,
-          interviewRound: application.interviewRound,
+          interviewRound: application.interviewRound ?? undefined,
           salary: application.salary ?? "",
           jobUrl: application.jobUrl ?? "",
           notes: application.notes ?? "",
