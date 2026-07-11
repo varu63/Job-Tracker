@@ -1,36 +1,90 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 Job Tracker – Smart Job Application Management Platform
 
-## Getting Started
+Job Tracker is a modern full-stack web application designed to help job seekers organize, manage, and monitor their job applications throughout the hiring process. Instead of tracking applications in spreadsheets or notes, users can manage everything from a single dashboard with real-time insights and visual analytics.
 
-First, run the development server:
+The platform allows users to securely authenticate, create and manage job applications, update their application status, and monitor their overall job search progress. Each application stores important details such as the company name, job role, application date, job location, salary, application link, and personal notes.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+An interactive dashboard provides a comprehensive overview of the user's job search by displaying statistics and charts that summarize application progress. Users can quickly identify how many jobs they have saved, applied for, interviewed with, received offers from, accepted, or been rejected from. Search, filtering, and sorting features make it easy to manage a growing list of applications efficiently.
+
+## ✨ Features
+
+* 🔐 Secure authentication using Better Auth.js
+* ➕ Create, edit, and delete job applications
+* 📋 Track every application from Saved to Accepted
+* 📊 Interactive dashboard with charts and analytics
+* 🔍 Search applications by company or job role
+* 🎯 Filter applications by status
+* 📅 Store application dates and interview schedules
+* 📝 Add notes for each application
+* 📱 Fully responsive design for desktop, tablet, and mobile
+* 🎨 Modern UI built with Tailwind CSS and shadcn/ui
+
+## 📊 Application Workflow
+
+```text
+Saved
+   │
+   ▼
+Applied
+   │
+   ▼
+Interview
+   │
+   ├──────────────┐
+   ▼              ▼
+Offer         Rejected
+   │
+   ▼
+Accepted
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 📈 Dashboard
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The dashboard provides real-time insights into the user's job search, including:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+* Total Applications
+* Saved Jobs
+* Applied Jobs
+* Interviews Scheduled
+* Offers Received
+* Accepted Offers
+* Rejected Applications
+* Monthly Application Trends
+* Application Status Distribution
+* Recent Activity
 
-## Learn More
+## 🛠️ Tech Stack
 
-To learn more about Next.js, take a look at the following resources:
+### Frontend
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+* Next.js
+* React
+* TypeScript
+* Tailwind CSS
+* shadcn/ui
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Backend
 
-## Deploy on Vercel
+* Next.js API Routes
+* Prisma ORM
+* Better Auth.js
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Database
+
+* Neon PostgreSQL
+
+### Authentication
+
+* Better Auth.js
+
+### Deployment
+
+* Vercel
+* Neon PostgreSQL
+
+## 🎯 Project Goal
+
+The primary goal of Job Tracker is to simplify the job application process by providing a centralized platform where users can organize applications, monitor hiring progress, visualize their job search through analytics, and stay focused throughout their career journey.
+template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
