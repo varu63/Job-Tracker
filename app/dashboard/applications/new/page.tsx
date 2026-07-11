@@ -86,7 +86,7 @@ export default function CreateApplicationPage() {
       });
 
       const data = await response.json();
-      console.log( " this is the data",data)
+      
 
       if (!response.ok) {
         throw new Error(data.error || "Failed to save application");

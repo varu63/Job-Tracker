@@ -51,9 +51,9 @@ export async function POST(req: NextRequest) {
         status: result.data.status,
         interviewRound: result.data.interviewRound,
 
-        salary: result.data.salary || null,
-        jobUrl: result.data.jobUrl || null,
-        notes: result.data.notes || null,
+        salary: result.data.salary ?? undefined,
+        jobUrl: result.data.jobUrl ?? undefined,
+        notes: result.data.notes ?? undefined,
 
         userId: session.user.id,
       },

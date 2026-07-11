@@ -15,17 +15,16 @@ import { Badge } from "@/components/ui/badge";
 import AddButton from "@/components/applications/add-button"
 
 export default async function DashboardPage() {
-  console.time("session");
 
 const session = await auth.api.getSession({
   headers: await headers(),
 });
 
-console.timeEnd("session");
+
 
 if (!session) return null;
 
-console.time("dashboardData");
+
 
 const {
   applications,
@@ -36,7 +35,7 @@ const {
   monthlyData,
   statusData,
 } = await getDashboardData(session.user.id);
-console.timeEnd("dashboardData");
+;
 
   return (
     <div className="space-y-8 p-8">
