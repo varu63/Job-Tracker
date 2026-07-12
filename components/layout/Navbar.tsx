@@ -60,7 +60,7 @@ export default function Navbar() {
         </nav>
 
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
+          <DropdownMenuTrigger >
             <Button
               variant="ghost"
               className="rounded-full p-0"
@@ -77,7 +77,7 @@ export default function Navbar() {
             align="end"
             className="w-48"
           >
-            <DropdownMenuItem asChild>
+            <DropdownMenuItem >
               <Link href="/dashboard/profile">
                 <User className="mr-2 h-4 w-4" />
                 Profile

@@ -17,11 +17,21 @@ import AddButton from "./add-button";
 
 interface Props {
   applications: any[];
+  total: number;
+  currentPage: number;
+  pageSize: number;
 }
 
 export default function ApplicationsTable({
   applications,
+  total,
+  currentPage,
+  pageSize,
 }: Props) {
+  const totalPages = Math.max(1, Math.ceil(total / pageSize));
+  const hasPrevious = currentPage > 1;
+  const hasNext = currentPage < totalPages;
+
   return (
     <div className="rounded-lg border">
       <Table>
@@ -57,7 +67,6 @@ export default function ApplicationsTable({
 
               <TableCell className="text-right space-x-2">
                 <Button
-                  asChild
                   size="sm"
                   variant="outline"
                 >
@@ -69,14 +78,55 @@ export default function ApplicationsTable({
                 </Button>
 
                 <DeleteApplicationDialog
-  id={job.id}
-/>
+                  id={job.id}
+                />
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
-      <AddButton/>
+
+      <div className="flex items-center justify-between px-4 py-3 border-t">
+        <span className="text-sm text-muted-foreground">
+          Page {currentPage} of {totalPages} ({total} total)
+        </span>
+
+        <div className="flex gap-2">
+          <Button
+           
+            size="sm"
+            variant="outline"
+            disabled={!hasPrevious}
+          >
+            <Link
+              href={`/dashboard/applications?page=${currentPage - 1}`}
+              aria-disabled={!hasPrevious}
+              tabIndex={hasPrevious ? undefined : -1}
+              className={!hasPrevious ? "pointer-events-none opacity-50" : ""}
+            >
+              Previous
+            </Link>
+          </Button>
+
+          <Button
+          
+            size="sm"
+            variant="outline"
+            disabled={!hasNext}
+          >
+            <Link
+              href={`/dashboard/applications?page=${currentPage + 1}`}
+              aria-disabled={!hasNext}
+              tabIndex={hasNext ? undefined : -1}
+              className={!hasNext ? "pointer-events-none opacity-50" : ""}
+            >
+              Next
+            </Link>
+          </Button>
+        </div>
+      </div>
+
+      <AddButton />
     </div>
   );
 }

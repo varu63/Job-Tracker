@@ -2,7 +2,7 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { JobApplicationSchema, JobApplicationType } from "@/lib/validations/job";
+import { JobApplicationSchema, JobApplicationType , JobApplicationInput} from "@/lib/validations/job";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -27,27 +27,27 @@ export default function JobApplicationForm({
   defaultValues,
 }: JobApplicationFormProps) {
   const {
-    register,
-    handleSubmit,
-    setValue,
-    watch,
-    formState: { errors, isSubmitting },
-  } = useForm<JobApplicationType>({
-    resolver: zodResolver(JobApplicationSchema),
-    defaultValues: {
-      companyName: "",
-      jobRole: "",
-      location: "",
-      salary: "",
-      jobUrl: "",
-      notes: "",
-      workMode: "REMOTE",
-      employmentType: "INTERNSHIP",
-      status: "APPLIED",
-      interviewRound: "NOT_STARTED",
-      ...defaultValues,
-    },
-  });
+  register,
+  handleSubmit,
+  setValue,
+  watch,
+  formState: { errors, isSubmitting },
+} = useForm<JobApplicationInput, any, JobApplicationType>({
+  resolver: zodResolver(JobApplicationSchema),
+  defaultValues: {
+    companyName: "",
+    jobRole: "",
+    location: "",
+    salary: "",
+    jobUrl: "",
+    notes: "",
+    workMode: "REMOTE",
+    employmentType: "INTERNSHIP",
+    status: "APPLIED",
+    interviewRound: "NOT_STARTED",
+    ...defaultValues,
+  },
+});
 
   return (
     <form

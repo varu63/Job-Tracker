@@ -1,7 +1,9 @@
-import { auth } from "@/lib/auth";
+
 import { db } from "@/lib/db";
 import ApplicationsTable from "@/components/applications/applications-table";
 import { headers } from "next/headers";
+import { Prisma , WorkMode} from "@prisma/client";
+import { redirect } from "next/navigation";
 interface Props {
   searchParams: Promise<{
     search?: string;
@@ -11,6 +13,8 @@ interface Props {
     page?: string;
   }>;
 }
+import { auth } from "@/lib/auth"; 
+
 
 const PAGE_SIZE = 10;
 
@@ -20,6 +24,11 @@ export default async function ApplicationsPage({
   const session = await auth.api.getSession({
     headers : await headers()
   });
+if (!session?.user?.id) {
+  redirect("/login"); // adjust to your actual login route
+}
+
+const userId = session.user.id;
 
   if (!session) return null;
 
@@ -31,37 +40,19 @@ export default async function ApplicationsPage({
   const sort = params.sort ?? "newest";
   const page = Number(params.page ?? "1");
 
-  const where = {
-    userId: session.user.id,
-
-    ...(search && {
-      OR: [
-        {
-          companyName: {
-            contains: search,
-            mode: "insensitive",
-          },
-        },
-        {
-          jobRole: {
-            contains: search,
-            mode: "insensitive",
-          },
-        },
-      ],
-    }),
-
-    ...(status &&
-      status !== "ALL" && {
-        status,
-      }),
-
-    ...(workMode &&
-      workMode !== "ALL" && {
-        workMode,
-      }),
-  };
-
+ const where: Prisma.JobApplicationWhereInput = {
+  userId,
+  ...(workMode ? { workMode: workMode as WorkMode } : {}),
+  ...(status ? { status: status as Prisma.JobApplicationWhereInput["status"] } : {}),
+  ...(search
+    ? {
+        OR: [
+          { companyName: { contains: search, mode: Prisma.QueryMode.insensitive } },
+          { jobRole: { contains: search, mode: Prisma.QueryMode.insensitive } },
+        ],
+      }
+    : {}),
+};
   const orderBy =
     sort === "oldest"
       ? { applicationDate: "asc" as const }

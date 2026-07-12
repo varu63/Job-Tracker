@@ -69,6 +69,5 @@ export const JobApplicationSchema = z.object({
     .optional(),
 });
 
-export type JobApplicationType = z.infer<
-  typeof JobApplicationSchema
->;
+export type JobApplicationType = z.infer<typeof JobApplicationSchema>;
+export type JobApplicationInput = z.input<typeof JobApplicationSchema>;

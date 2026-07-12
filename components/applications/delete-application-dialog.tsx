@@ -46,7 +46,7 @@ export default function DeleteApplicationDialog({
 
   return (
     <AlertDialog>
-      <AlertDialogTrigger asChild>
+      <AlertDialogTrigger>
         <Button
           size="sm"
           variant="destructive"

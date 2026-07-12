@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
+import { toast } from "sonner";
 
 import {
   Card,
@@ -33,22 +34,36 @@ import {
 
 import { Calendar } from "@/components/ui/calendar";
 
+type FormData = {
+  companyName: string;
+  jobRole: string;
+  location: string;
+  salary: string;
+  workMode: string;
+  employmentType: string;
+  status: string;
+  interviewRound: string;
+  jobUrl: string;
+  notes: string;
+};
+
+const initialFormData: FormData = {
+  companyName: "",
+  jobRole: "",
+  location: "",
+  salary: "",
+  workMode: "",
+  employmentType: "",
+  status: "",
+  interviewRound: "",
+  jobUrl: "",
+  notes: "",
+};
+
 export default function CreateApplicationPage() {
   const [date, setDate] = useState<Date | undefined>(undefined);
   const [loading, setLoading] = useState(false);
-
-  const [formData, setFormData] = useState({
-    companyName: "",
-    jobRole: "",
-    location: "",
-    salary: "",
-    workMode: "",
-    employmentType: "",
-    status: "",
-    interviewRound: "",
-    jobUrl: "",
-    notes: "",
-  });
+  const [formData, setFormData] = useState<FormData>(initialFormData);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -61,10 +76,13 @@ export default function CreateApplicationPage() {
     }));
   };
 
-  const handleSelectChange = (name: string, value: string) => {
+  const handleSelectChange = <K extends keyof FormData>(
+    field: K,
+    value: string | null,
+  ) => {
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [field]: value ?? "",
     }));
   };
 
@@ -85,32 +103,18 @@ export default function CreateApplicationPage() {
         }),
       });
 
-      const data = await response.json();
-      
-
       if (!response.ok) {
-        throw new Error(data.error || "Failed to save application");
+        toast.error("Failed to create application");
+        return;
       }
 
-      alert("Application saved successfully!");
+      toast.success("Application created successfully!");
 
-      setFormData({
-        companyName: "",
-        jobRole: "",
-        location: "",
-        salary: "",
-        workMode: "",
-        employmentType: "",
-        status: "",
-        interviewRound: "",
-        jobUrl: "",
-        notes: "",
-      });
-
+      setFormData(initialFormData);
       setDate(undefined);
     } catch (error) {
       console.error(error);
-      alert("Failed to save application");
+      toast.error("Failed to save application");
     } finally {
       setLoading(false);
     }
@@ -196,9 +200,7 @@ export default function CreateApplicationPage() {
 
                   <SelectContent>
                     <SelectItem value="REMOTE">Remote</SelectItem>
-
                     <SelectItem value="HYBRID">Hybrid</SelectItem>
-
                     <SelectItem value="ONSITE">Onsite</SelectItem>
                   </SelectContent>
                 </Select>
@@ -219,11 +221,8 @@ export default function CreateApplicationPage() {
 
                   <SelectContent>
                     <SelectItem value="INTERNSHIP">Internship</SelectItem>
-
                     <SelectItem value="FULL_TIME">Full Time</SelectItem>
-
                     <SelectItem value="CONTRACT">Contract</SelectItem>
-
                     <SelectItem value="PART_TIME">Part Time</SelectItem>
                   </SelectContent>
                 </Select>
@@ -231,29 +230,23 @@ export default function CreateApplicationPage() {
             </div>
 
             {/* Date & Status */}
-            <div className="grid gap-6 md:grid-cols-2">
-              <div className="space-y-2">
-                <Label>Application Date</Label>
+            <div className="space-y-2">
+  <Label>Application Date</Label>
 
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button variant="outline" className="justify-start w-full">
-                      <CalendarIcon className="mr-2 h-4 w-4" />
+  <Popover>
+  <PopoverTrigger>
+    <Button variant="outline" className="justify-start w-full" type="button">
+      <CalendarIcon className="mr-2 h-4 w-4" />
+      {date ? format(date, "PPP") : "Pick a date"}
+    </Button>
+  </PopoverTrigger>
 
-                      {date ? format(date, "PPP") : "Pick a date"}
-                    </Button>
-                  </PopoverTrigger>
+  <PopoverContent className="w-auto p-0">
+    <Calendar mode="single" selected={date} onSelect={setDate} />
+  </PopoverContent>
+</Popover>
 
-                  <PopoverContent className="w-auto p-0">
-                    <Calendar
-                      mode="single"
-                      selected={date}
-                      onSelect={setDate}
-                    />
-                  </PopoverContent>
-                </Popover>
-              </div>
-
+</div>
               <div className="space-y-2">
                 <Label>Status</Label>
 
@@ -267,24 +260,18 @@ export default function CreateApplicationPage() {
 
                   <SelectContent>
                     <SelectItem value="SAVED">Saved</SelectItem>
-
                     <SelectItem value="APPLIED">Applied</SelectItem>
-
                     <SelectItem value="ASSESSMENT">Assessment</SelectItem>
-
                     <SelectItem value="INTERVIEW_SCHEDULED">
                       Interview Scheduled
                     </SelectItem>
-
                     <SelectItem value="OFFER_RECEIVED">Offer Received</SelectItem>
-
                     <SelectItem value="ACCEPTED">Accepted</SelectItem>
-
                     <SelectItem value="REJECTED">Rejected</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
-            </div>
+            
 
             {/* Interview Round */}
             <div className="space-y-2">
@@ -302,17 +289,11 @@ export default function CreateApplicationPage() {
 
                 <SelectContent>
                   <SelectItem value="NOT_STARTED">Not Started</SelectItem>
-
                   <SelectItem value="ROUND_1">Round 1</SelectItem>
-
                   <SelectItem value="ROUND_2">Round 2</SelectItem>
-
                   <SelectItem value="ROUND_3">Round 3</SelectItem>
-
                   <SelectItem value="MANAGER">Manager Round</SelectItem>
-
                   <SelectItem value="HR">HR Round</SelectItem>
-
                   <SelectItem value="FINAL">Final Round</SelectItem>
                 </SelectContent>
               </Select>

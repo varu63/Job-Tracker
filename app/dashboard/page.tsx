@@ -131,7 +131,10 @@ const {
 
           <CardContent>
   <MonthlyApplicationsChart
-  data={monthlyData} />
+ data={monthlyData.map((m: { month: string; total: number }) => ({
+    month: m.month,
+    applications: m.total,
+  }))} />
 </CardContent>
         </Card>
 
@@ -147,7 +150,8 @@ const {
           </CardHeader>
 
           <CardContent>
-  <ApplicationStatusChart data={statusData} />
+  <ApplicationStatusChart
+   data={statusData.map((s) => ({ name: s.status, value: s.value }))} />
 </CardContent>
         </Card>
       </div>
