@@ -1,4 +1,7 @@
 import { notFound } from "next/navigation";
+import { headers } from "next/headers";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
@@ -11,12 +14,12 @@ interface Props {
   }>;
 }
 
-export default async function EditApplicationPage({
-  params,
-}: Props) {
+export default async function EditApplicationPage({ params }: Props) {
   const { id } = await params;
 
-  const session = await auth.api.getSession();
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
 
   if (!session) {
     return notFound();
@@ -36,19 +39,35 @@ export default async function EditApplicationPage({
   async function updateApplication(data: any) {
     "use server";
 
-    await db.jobApplication.update({
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    });
+
+    if (!session) {
+      throw new Error("Unauthorized");
+    }
+
+    const result = await db.jobApplication.updateMany({
       where: {
         id,
+        userId: session.user.id,
       },
       data,
     });
+
+    if (result.count === 0) {
+      throw new Error("Application not found or you do not have permission to edit it");
+    }
+
+    revalidatePath(`/dashboard/applications/${id}`);
+    revalidatePath("/dashboard/applications");
+
+    redirect("/dashboard/applications");
   }
 
   return (
     <div className="container mx-auto max-w-4xl py-10">
-      <h1 className="mb-6 text-3xl font-bold">
-        Edit Application
-      </h1>
+      <h1 className="mb-6 text-3xl font-bold">Edit Application</h1>
 
       <JobApplicationForm
         defaultValues={{
